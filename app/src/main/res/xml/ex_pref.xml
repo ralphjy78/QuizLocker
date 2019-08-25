@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.CheckBoxPreference
-            android:title="데이터 동기화 사용" android:key="isSync" android:summary="클라우드 저장소와 데이터를 동기화합니다."/>
-    <android.support.v7.preference.EditTextPreference
+    <CheckBoxPreference
+            android:defaultValue="false"
+            android:title="데이터 동기화 사용"
+            android:key="isSync"
+            android:summary="클라우드 저장소와 데이터를 동기화합니다."/>
+    <EditTextPreference
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="이름" android:key="name" android:defaultValue="홍길동" android:summary="사용자 이름을 설정하세요."/>
+            android:title="이름"
+            android:key="name"
+            android:defaultValue="홍길동"
+            android:summary="사용자 이름을 설정하세요."/>
+    <SwitchPreference
+            android:defaultValue="false"
+            android:title="푸시알림"
+            android:key="isPush"
+            android:summary="여러가지 유용한 정보를 받아보세요."/>
 
-</android.support.v7.preference.PreferenceScreen>
+</PreferenceScreen>
