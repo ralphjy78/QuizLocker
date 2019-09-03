@@ -1,9 +1,12 @@
 package com.ralph.quizlocker
 
+import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v14.preference.MultiSelectListPreference
 import android.support.v14.preference.PreferenceFragment
+import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.PreferenceFragmentCompat
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +43,35 @@ class MainActivity : AppCompatActivity() {
                 categoryPref.summary = newValue.joinToString(", ")
 
                 true
+            }
+
+            // 퀴즈 잠금화면 사용 스위치 객체 가져옴
+            val useLockScreenPref = findPreference("useLockScreen") as SwitchPreference
+
+            // 클릭되었을 때의 이벤트 리스너 코드 작성
+            useLockScreenPref.setOnPreferenceClickListener {
+                when {
+                    // 퀴즈 잠금화면 사용이 체크된 경우 LockScreenService 실행
+                    useLockScreenPref.isChecked -> {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            activity?.startForegroundService(Intent(activity, LockScreenService::class.java))
+                        } else {
+                            activity?.startService(Intent(activity, LockScreenService::class.java))
+                        }
+                    }
+                    // 퀴즈 잠금화면 사용이 체크 해제된 경우 LockScreenService 중단
+                    else -> activity?.stopService(Intent(activity, LockScreenService::class.java))
+                }
+                true
+            }
+
+            // 앱이 시작되었을 때 이미 퀴즈잠금화면 사용이 체크되어 있으면 서비스 실행
+            if(useLockScreenPref.isChecked) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    activity?.startForegroundService(Intent(activity, LockScreenService::class.java))
+                } else {
+                    activity?.startService(Intent(activity, LockScreenService::class.java))
+                }
             }
         }
     }
