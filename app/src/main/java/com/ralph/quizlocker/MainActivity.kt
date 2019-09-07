@@ -1,5 +1,6 @@
 package com.ralph.quizlocker
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -8,6 +9,10 @@ import android.support.v14.preference.MultiSelectListPreference
 import android.support.v14.preference.PreferenceFragment
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     val fragment = MyPreferenceFragment()
@@ -18,8 +23,26 @@ class MainActivity : AppCompatActivity() {
 
         // preferenceContent FrameLayout 영역을 PreferenceFragment로 교체한다.
         //fragmentManager.beginTransaction().replace(R.id.preferenceContent, fragment).commit()
-        //supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
         supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
+
+        // 버튼이 클릭되면 initAnswerCount() 실행
+        initButton.setOnClickListener {
+            Log.d("quizlocker", "initAnserCount() 호출")
+            initAnswerCount()
+        }
+    }
+
+    private fun initAnswerCount() {
+        // 정답횟수, 오답횟수 설정정보를 가져온다.
+        val correctAnswerPref = getSharedPreferences("correctAnswer", Context.MODE_PRIVATE)
+        val wrongAnswerPref = getSharedPreferences("wrongAnswer", Context.MODE_PRIVATE)
+
+        // 초기화
+        correctAnswerPref.edit().clear().apply()
+        wrongAnswerPref.edit().clear().apply()
+
+        Log.d("quizlocker", "initAnserCount() 내부")
+        Toast.makeText(applicationContext, "정답, 오답 횟수가 초기화 되었습니다.", Toast.LENGTH_LONG).show()
     }
 
     class MyPreferenceFragment : PreferenceFragmentCompat() {

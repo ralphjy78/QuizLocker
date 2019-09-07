@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.WindowManager
 import android.widget.SeekBar
 import kotlinx.android.synthetic.main.activity_quiz_locker.*
@@ -15,6 +17,11 @@ import java.util.*
 class QuizLockerActivity : AppCompatActivity() {
 
     var quiz:JSONObject? = null
+
+    // 정답횟수 저장 SharedPreference
+    val wrongAnswerPref by lazy { getSharedPreferences("wrongAnswer", Context.MODE_PRIVATE)}
+    // 오답횟수 저장 SharedPreference
+    val correctAnswerPref by lazy { getSharedPreferences("correctAnswer", Context.MODE_PRIVATE)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +58,12 @@ class QuizLockerActivity : AppCompatActivity() {
         quizLabel.text = quiz?.getString("question")
         choice1.text = quiz?.getString("choice1")
         choice2.text = quiz?.getString("choice2")
+
+        // 정답횟수를 보여준다.
+        val id = quiz?.getInt("id").toString() ?: ""
+        correctCountLabel.text = "정답횟수:${correctAnswerPref.getInt(id, 0)}"
+        wrongCountLabel.text = "오답횟수:${wrongAnswerPref.getInt(id, 0)}"
+
 
         // SeekBar의 값이 변경될 때 불리는 리스너
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
@@ -99,13 +112,41 @@ class QuizLockerActivity : AppCompatActivity() {
         quiz?.let {
             when {
                 // choice의 텍스트가 정답 텍스트와 같으면 Activity 종료
-                choice == it.getString("answer") -> finish()
+                choice == it.getString("answer") -> {
+                    // 정답인 경우 정답횟수 증가
+                    val id= it.getInt("id").toString()
+                    var count = correctAnswerPref.getInt(id, 0)
+                    count++
+                    correctAnswerPref.edit().putInt(id, count).apply()
+                    correctCountLabel.text = "정답횟수:${count}"
+
+                    // Activity 종료
+                    finish()
+                }
 
                 else -> {
+                    // 오답횟수 증가
+                    val id= it.getInt("id").toString()
+                    var count = wrongAnswerPref.getInt(id, 0)
+                    count++
+                    wrongAnswerPref.edit().putInt(id, count).apply()
+                    wrongCountLabel.text = "오답횟수:${count}"
+
                     // 정답이 아닌 경우 UI 초기화
                     leftImageView.setImageResource(R.drawable.padlock)
                     rightImageView.setImageResource(R.drawable.unlock)
                     seekBar?.progress = 50
+
+                    // 정답이 아닌 경우 진동알림 추가
+                    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {    // 26
+                        // 1초동안 100의 세기(최고 255)로 1회 진동
+                        vibrator.vibrate(VibrationEffect.createOneShot(1000, 100))
+                    } else {
+                        // 1초동안 진동
+                        vibrator.vibrate(1000)
+                    }
                 }
             }
         }

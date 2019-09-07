@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 부팅이 완료될 때 브로드캐스트 수신을 위한 권한 요청 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
+    <!-- 진동 서비스 사용 권한 요청 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
