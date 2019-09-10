@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.preference.PreferenceManager
+import android.support.v4.content.ContextCompat.getSystemService
 import android.view.WindowManager
 import android.widget.SeekBar
 import kotlinx.android.synthetic.main.activity_quiz_locker.*
@@ -48,10 +50,22 @@ class QuizLockerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_quiz_locker)
 
         // 퀴즈 데이터를 가져온다.
-        val json = assets.open("capital.json").reader().readText()
+        val pref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val category = pref.getStringSet("category", setOf<String>("수도"))
+
+        var jsonFiles: MutableList<String> = mutableListOf()
+
+        // 선택한 퀴즈 종류를 저장
+        if(category.contains("일반상식")) jsonFiles.add("knowledge.json")
+        if(category.contains("역사")) jsonFiles.add("history.json")
+        if(category.contains("수도")) jsonFiles.add("capital.json")
+
+        // 선택한 퀴즈 종류 중 랜덤하게 한가지 선택
+        val jsonFileIndex = Random().nextInt(jsonFiles.size)
+        val json = assets.open(jsonFiles[jsonFileIndex]).reader().readText()
         val quizArray = JSONArray(json)
 
-        // 퀴즈를 선택한다.
+        // 선택된 종류에서 랜덤하게 퀴즈 선택
         quiz = quizArray.getJSONObject(Random().nextInt(quizArray.length()))
 
         // 퀴즈를 보여준다.

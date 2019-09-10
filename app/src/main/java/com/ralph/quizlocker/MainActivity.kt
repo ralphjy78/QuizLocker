@@ -10,7 +10,9 @@ import android.support.v14.preference.PreferenceFragment
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,16 +23,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // preferenceContent FrameLayout 영역을 PreferenceFragment로 교체한다.
-        //fragmentManager.beginTransaction().replace(R.id.preferenceContent, fragment).commit()
-        supportFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit()
-
         // 버튼이 클릭되면 initAnswerCount() 실행
-        initButton.setOnClickListener {
-            Log.d("quizlocker", "initAnserCount() 호출")
+        initButton.setOnClickListener() {
+            Log.d("######### quizlocker", "initAnserCount() 호출")
             initAnswerCount()
         }
+
+        // preferenceContent FrameLayout 영역을 PreferenceFragment로 교체한다.
+        //fragmentManager.beginTransaction().replace(R.id.preferenceContent, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.preferenceContent, fragment).commit()
     }
+
 
     private fun initAnswerCount() {
         // 정답횟수, 오답횟수 설정정보를 가져온다.
@@ -46,10 +49,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     class MyPreferenceFragment : PreferenceFragmentCompat() {
-        //override fun onCreate(savedInstanceState: Bundle?) {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            //super.onCreate(savedInstanceState)
 
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+        }
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             // 환경설정 리소스 파일 적용
             addPreferencesFromResource(R.xml.pref)
 

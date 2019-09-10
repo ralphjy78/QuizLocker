@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question":"빛의 3원색이\n아닌 것은?",
+    "choice1": "초록",
+    "choice2": "노랑",
+    "answer": "노랑"
+  },
+  {
+    "id": 2,
+    "question": "미술작품\n'절규'의 작가는?",
+    "choice1": "뭉크",
+    "choice2": "피카소",
+    "answer": "뭉크"
+  },
+  {
+    "id": 3,
+    "question": "추석은 음력으로\n언제일까?",
+    "choice1": "9.15",
+    "choice2": "8.15",
+    "answer": "8.15"
+  },
+  {
+    "id": 4,
+    "question": "문재인은\n몇대 대통령?",
+    "choice1": "19대",
+    "choice2": "10대",
+    "answer": "19대"
+  },
+  {
+    "id": 5,
+    "question": "방탄소년단 멤버수는?",
+    "choice1": "31명",
+    "choice2": "7명",
+    "answer": "7명"
+  }
+]

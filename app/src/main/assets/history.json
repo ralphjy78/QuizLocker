@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question":"해골물을\n마신 사람은?",
+    "choice1": "원효",
+    "choice2": "혜초",
+    "answer": "원효"
+  },
+  {
+    "id": 2,
+    "question": "임진왜란을\n일으킨 나라는?",
+    "choice1": "청",
+    "choice2": "왜",
+    "answer": "왜"
+  },
+  {
+    "id": 3,
+    "question": "알에서 태어나지\n않은 사람은?",
+    "choice1": "박혁거세",
+    "choice2": "온조왕",
+    "answer": "온조왕"
+  },
+  {
+    "id": 4,
+    "question": "최초의\n한글소설은?",
+    "choice1": "콩쥐팥쥐전",
+    "choice2": "홍길동전",
+    "answer": "홍길동전"
+  },
+  {
+    "id": 5,
+    "question": "광복절은?",
+    "choice1": "1945.8.15",
+    "choice2": "1950.6.25",
+    "answer": "1945.8.15"
+  }
+]
